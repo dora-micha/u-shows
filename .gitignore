@@ -1,0 +1,21 @@
+# Dependencies
+node_modules
+
+# Build output
+dist
+
+# Environment variables
+*.local
+
+# Logs
+*.log
+npm-debug.log*
+
+# Test coverage
+coverage
+
+# OS files
+.DS_Store
+
+# Editor files
+.vscode
