@@ -1,7 +1,5 @@
-<script setup lang="ts">
-import HiHi from './components/HiHi.vue'
-</script>
+<script setup lang="ts"></script>
 
 <template>
-  <HiHi />
+  <RouterView />
 </template>
