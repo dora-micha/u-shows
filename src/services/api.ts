@@ -10,7 +10,6 @@ const API_URL = 'https://api.tvmaze.com'
 export const fetchShows = async (page = 1): Promise<Show[]> => {
   const response = await fetch(`${API_URL}/shows?page=${page}`)
   if (!response.ok) {
-    console.log(response)
     throw new Error(`Failed to fetch shows page ${page}: ${response.status}`)
   }
   return response.json()

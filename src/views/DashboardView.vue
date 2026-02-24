@@ -1,56 +1,83 @@
 <script setup lang="ts">
-import { watch } from 'vue'
+import { watch, onMounted } from 'vue'
 import type { Show } from '../types/tvmaze'
 import { fetchShows } from '../services/api'
 import { useQuery } from '../composables/useQuery'
 import { useShowsStore } from '../stores/shows'
 import { useShows } from '../composables/useShows'
-import SearchShows from '../components/SearchShows.vue'
-import { RouteName } from '../router'
+import { UPageNavigation, UCarousel, UTypography, UQueryState } from '../components/ui'
+import CardShow from '../components/dashboard/CardShow.vue'
 
-const store = useShowsStore()
+const INITIAL_PAGES_TO_FETCH = 3
 
+const showsStore = useShowsStore()
+const { showsByGenre, genres } = useShows()
 const { data, isLoading, isFetching, isError, fetchData } = useQuery<Show[]>(
-  () => fetchShows(store.nextPage),
-  { immediate: true }
+  () => fetchShows(showsStore.nextPage),
+  { immediate: false }
 )
 
-watch(data, (newData) => {
-  if (newData && newData.length > 0) {
-    store.addShows(newData)
-    store.incrementPage()
+// Fetch initial pages sequentially (not Promise.all) because:
+// 1. TVMaze API has rate limits - sequential requests prevent 429 errors
+// 2. Each fetch must complete for store.nextPage to increment (via watch)
+const fetchInitialShows = async () => {
+  for (let i = 0; i < INITIAL_PAGES_TO_FETCH; i++) {
+    await fetchData()
+
+    // Stop fetching if error occurred or no more data available
+    if (isError.value || !data.value || data.value.length === 0) {
+      break
+    }
+
+    // Small delay between requests to:
+    // - Respect API rate limits
+    // - Allow watch to complete store updates (incrementPage) before next fetch
+    if (i < INITIAL_PAGES_TO_FETCH - 1) {
+      await new Promise((resolve) => setTimeout(resolve, 100))
+    }
+  }
+}
+
+onMounted(() => {
+  if (showsStore.shows.length === 0) {
+    fetchInitialShows()
   }
 })
 
-const { showsByGenre } = useShows()
+watch(data, async (newData) => {
+  if (newData && newData.length > 0) {
+    showsStore.addShows(newData)
+    showsStore.incrementPage()
+  }
+})
 </script>
 
 <template>
   <div>
-    <h1>Dashboard</h1>
+    <UQueryState
+      :is-loading="isLoading"
+      :is-error="isError"
+      :is-empty="!isLoading && !isError && showsStore.shows.length === 0"
+      loading-message="Loading shows..."
+      empty-message="No shows found. Please try again later."
+    />
 
-    <SearchShows />
+    <template v-if="!isLoading && !isError && showsStore.shows.length > 0">
+      <UPageNavigation class="-mx-5" :items="genres" />
 
-    <div v-if="isLoading">Loading...</div>
+      <UTypography size="xl" as="h1" class="my-2 sm:my-6">Your TV Shows hub</UTypography>
 
-    <div v-else-if="isError">
-      <p>Something went wrong. Please try again.</p>
-    </div>
-
-    <div v-else>
-      <div v-for="(showList, genre) in showsByGenre" :key="genre">
-        <h2>{{ genre }} ({{ showList.length }})</h2>
-        <ul>
-          <li v-for="show in showList" :key="show.id">
-            <RouterLink :to="{ name: RouteName.ShowDetail, params: { id: show.id } }">{{
-              show.name
-            }}</RouterLink>
-          </li>
-        </ul>
-        <button :disabled="isFetching" @click="fetchData">
-          {{ isFetching ? 'Loading...' : 'Load more' }}
-        </button>
-      </div>
-    </div>
+      <section
+        v-for="(genre, genreId) in showsByGenre"
+        :id="genreId"
+        :key="genreId"
+        class="scroll-mt-24 mb-6"
+      >
+        <UTypography size="lg" as="h2" class="mb-2 sm:mb-4">{{ genre.genreLabel }}</UTypography>
+        <UCarousel :is-fetching="isFetching" @reach-end="fetchData">
+          <CardShow v-for="show in genre.genreShows" :key="show.id" :show="show" />
+        </UCarousel>
+      </section>
+    </template>
   </div>
 </template>

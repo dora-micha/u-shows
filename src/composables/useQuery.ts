@@ -2,7 +2,7 @@ import { ref, computed } from 'vue'
 import { logError } from '../utils/logger'
 
 export interface UseQueryOptions {
-  immediate: boolean
+  immediate: boolean // Required to force explicit fetch strategy (true: auto-execute, false: manual)
 }
 
 export const useQuery = <T>(queryFn: () => Promise<T>, options: UseQueryOptions) => {

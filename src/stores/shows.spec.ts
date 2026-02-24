@@ -8,11 +8,11 @@ describe('useShowsStore', () => {
     setActivePinia(createPinia())
   })
 
-  it('initializes with empty shows and nextPage 1', () => {
+  it('initializes with empty shows and nextPage 0', () => {
     const store = useShowsStore()
 
     expect(store.shows).toEqual([])
-    expect(store.nextPage).toBe(1)
+    expect(store.nextPage).toBe(0)
   })
 
   it('adds shows and increments nextPage', () => {
@@ -23,7 +23,7 @@ describe('useShowsStore', () => {
     store.incrementPage()
 
     expect(store.shows).toHaveLength(2)
-    expect(store.nextPage).toBe(2)
+    expect(store.nextPage).toBe(1)
   })
 
   it('accumulates shows across multiple updates', () => {
@@ -35,7 +35,7 @@ describe('useShowsStore', () => {
     store.incrementPage()
 
     expect(store.shows).toHaveLength(2)
-    expect(store.nextPage).toBe(3)
+    expect(store.nextPage).toBe(2)
   })
 
   it('does not add shows with empty array', () => {
@@ -44,7 +44,7 @@ describe('useShowsStore', () => {
     store.addShows([])
 
     expect(store.shows).toEqual([])
-    expect(store.nextPage).toBe(1)
+    expect(store.nextPage).toBe(0)
   })
 
   it('resets store to initial state', () => {
@@ -55,6 +55,6 @@ describe('useShowsStore', () => {
     store.reset()
 
     expect(store.shows).toEqual([])
-    expect(store.nextPage).toBe(1)
+    expect(store.nextPage).toBe(0)
   })
 })

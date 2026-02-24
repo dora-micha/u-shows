@@ -1,8 +1,10 @@
 import { defineConfig } from 'vitest/config'
 import vue from '@vitejs/plugin-vue'
+import tailwindcss from '@tailwindcss/vite'
+import svgLoader from 'vite-svg-loader'
 
 export default defineConfig({
-  plugins: [vue()],
+  plugins: [vue(), svgLoader(), tailwindcss()],
   test: {
     globals: true,
     environment: 'jsdom',

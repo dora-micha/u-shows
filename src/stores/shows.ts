@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import type { Show } from '../types/tvmaze'
 
-const INITIAL_PAGE = 1
+const INITIAL_PAGE = 0
 
 export const useShowsStore = defineStore('shows', () => {
   const shows = ref<Show[]>([])
