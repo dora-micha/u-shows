@@ -2,7 +2,7 @@
 
 A modern, responsive TV shows discovery application built with Vue.js 3 and TypeScript. Browse popular TV shows by genre, view detailed information, and search for specific shows using the TVMaze API.
 
-[u-shows.vercel.app](u-shows.vercel.app)
+[https://u-shows.vercel.app](https://u-shows.vercel.app)
 
 ---
 
