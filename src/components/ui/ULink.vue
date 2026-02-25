@@ -25,7 +25,7 @@ const styles = computed(() => {
     return 'px-6 py-3 bg-primary-600 dark:bg-primary-500 text-primary-50 dark:text-primary-200 font-semibold'
   }
 
-  return ''
+  return 'text-primary-700 dark:text-primary-300'
 })
 </script>
 <template>

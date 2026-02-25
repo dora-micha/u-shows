@@ -36,6 +36,7 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    background-color: var(--color-stone-300);
   }
 
   body {
@@ -52,6 +53,10 @@
   }
 
   @media (prefers-color-scheme: dark) {
+    html {
+      background-color: var(--color-stone-900);
+    }
+
     body {
       background: linear-gradient(
         115deg,

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { ref, computed } from 'vue'
 
 interface ImageProps {
   size?: 'lg' | 'md' | 'sm'
@@ -18,12 +18,27 @@ const styleMap: Record<string, string> = {
 }
 
 const styles = computed(() => styleMap[props.size])
+const isLoading = ref(true)
+
+const handleLoad = () => {
+  isLoading.value = false
+}
 </script>
 
 <template>
-  <img v-if="src" :src="src" :alt="alt" :class="['object-cover', 'rounded', styles]" />
-  <div
-    v-else
-    :class="['object-cover', 'rounded', 'bg-primary-200', 'dark:bg-primary-800', styles]"
-  ></div>
+  <div :class="styles">
+    <div
+      v-if="src && isLoading"
+      class="w-full h-full rounded bg-primary-200 dark:bg-primary-800 animate-pulse"
+    />
+    <img
+      v-if="src"
+      :src="src"
+      :alt="alt"
+      :class="['w-full h-full object-cover rounded', { hidden: isLoading }]"
+      loading="lazy"
+      @load="handleLoad"
+    />
+    <div v-if="!src" class="w-full h-full rounded bg-primary-200 dark:bg-primary-800" />
+  </div>
 </template>

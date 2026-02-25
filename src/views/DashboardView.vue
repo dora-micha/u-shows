@@ -20,6 +20,7 @@ const { data, isLoading, isFetching, isError, fetchData } = useQuery<Show[]>(
 // Fetch initial pages sequentially (not Promise.all) because:
 // 1. TVMaze API has rate limits - sequential requests prevent 429 errors
 // 2. Each fetch must complete for store.nextPage to increment (via watch)
+// 3. Shows content imediatelly from the 1st fetch request
 const fetchInitialShows = async () => {
   for (let i = 0; i < INITIAL_PAGES_TO_FETCH; i++) {
     await fetchData()
@@ -71,7 +72,7 @@ watch(data, async (newData) => {
         v-for="(genre, genreId) in showsByGenre"
         :id="genreId"
         :key="genreId"
-        class="scroll-mt-24 mb-6"
+        class="scroll-mt-34 mb-6"
       >
         <UTypography size="lg" as="h2" class="mb-2 sm:mb-4">{{ genre.genreLabel }}</UTypography>
         <UCarousel :is-fetching="isFetching" @reach-end="fetchData">

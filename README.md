@@ -174,3 +174,30 @@ Session-based caching (no localStorage) - data clears on refresh to avoid stale 
 - Component composition over configuration
 - Barrel exports for clean import statements
 - Size-based prop APIs (not semantic) for flexibility
+
+## 4. Next steps
+
+**Core Features:**
+
+- Localization with i18n
+- Tests to reach 80% coverage
+- Add watchlist feature for tracking favorite shows
+
+**Production-ready:**
+
+- Deploy to production
+- E2E tests
+- Performance optimizations (virtual scrolling)
+- Content Security Policy (CSP) headers
+- API response caching
+- Monitoring and observability (error tracking)
+
+**UX Enhancements:**
+
+- Filters and sorting on Dashboard (by rating, year)
+- Episode tracking (mark as watched)
+- SEO improvements (meta tags, OpenGraph)
+
+**Accessibility:**
+
+- Comprehensive a11y audit and WCAG compliance

@@ -27,7 +27,7 @@ watch(
 
 <template>
   <aside
-    class="sticky top-0 z-10 px-2 backdrop-blur-xl bg-primary-50/70 dark:bg-primary-900/70 border-b border-primary-200/50 dark:border-primary-700/50"
+    class="sticky top-0 z-10 px-2 backdrop-blur-xl bg-primary-50/90 dark:bg-primary-900/90 border-b border-primary-200/50 dark:border-primary-700/50"
   >
     <ScrollAreaRoot class="w-full" type="hover">
       <ScrollAreaViewport class="u-focus-ring w-full">
