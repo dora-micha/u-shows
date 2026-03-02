@@ -20,7 +20,7 @@ const styleMap: Record<string, string> = {
 const styles = computed(() => styleMap[props.size])
 const isLoading = ref(true)
 
-const handleLoad = () => {
+const handleLoad = async () => {
   isLoading.value = false
 }
 </script>
@@ -35,7 +35,7 @@ const handleLoad = () => {
       v-if="src"
       :src="src"
       :alt="alt"
-      :class="['w-full h-full object-cover rounded', { hidden: isLoading }]"
+      :class="['w-full h-full object-cover rounded']"
       loading="lazy"
       @load="handleLoad"
     />
